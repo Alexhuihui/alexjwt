@@ -38,13 +38,17 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
             return;
         }
 
-        UsernamePasswordAuthenticationToken authentication = authenticate(request);
+        UsernamePasswordAuthenticationToken authRequest = convert(request);
+        if (authRequest == null) {
+            chain.doFilter(request, response);
+            return;
+        }
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        SecurityContextHolder.getContext().setAuthentication(authRequest);
         chain.doFilter(request, response);
     }
 
-    private UsernamePasswordAuthenticationToken authenticate(HttpServletRequest request) {
+    private UsernamePasswordAuthenticationToken convert(HttpServletRequest request) {
         String token = request.getHeader(HEADER_NAME);
         if (token != null) {
             Claims user = Jwts.parser()
