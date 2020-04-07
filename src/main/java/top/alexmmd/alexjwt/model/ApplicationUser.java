@@ -2,7 +2,7 @@ package top.alexmmd.alexjwt.model;
 
 import lombok.*;
 
-import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 /**
  * @author 汪永晖
@@ -12,15 +12,13 @@ import javax.persistence.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "tb_user")
 public class ApplicationUser {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotBlank(message = "用户名不能为空")
     private String username;
 
+    @NotBlank(message = "密码不能为空")
     private String password;
 }

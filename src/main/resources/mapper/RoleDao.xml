@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.alexmmd.alexjwt.dao.RoleDao">
+
+    <resultMap type="top.alexmmd.alexjwt.model.Role" id="RoleMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="RoleMap">
+        select
+          id, name
+        from Test.role
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="RoleMap">
+        select
+          id, name
+        from Test.role
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="RoleMap">
+        select
+          id, name
+        from Test.role
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryByRoleName" resultType="top.alexmmd.alexjwt.model.Role">
+        select
+          id, name
+        from Test.role
+        where name = #{name}
+    </select>
+
+    <select id="queryAllByUserId" resultType="top.alexmmd.alexjwt.model.RoleDetail">
+        SELECT
+            a.`role_id` AS roleId,
+            a.`privilege_id` AS privilegeId,
+            b.`name` AS roleName,
+            c.`name` AS privilegeName,
+            d.`user_id` AS userId
+        FROM
+            Test.`roles_privileges` AS a
+            LEFT JOIN Test.`role` AS b ON b.`id` = a.`role_id`
+            LEFT JOIN Test.`privilege` AS c ON c.`id` = a.`privilege_id`
+            LEFT JOIN Test.`users_roles` AS d ON d.`role_id` = a.`role_id`
+        WHERE
+            d.`user_id` = #{id}
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into Test.role(name)
+        values (#{name})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update Test.role
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from Test.role where id = #{id}
+    </delete>
+
+</mapper>

@@ -6,7 +6,6 @@ package top.alexmmd.alexjwt.security;
 
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -26,13 +25,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.Key;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static top.alexmmd.alexjwt.constants.SecurityConstants.*;
 
 @Slf4j
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
     private AuthenticationManager authenticationManager;
 
     public AuthenticationFilter(AuthenticationManager authenticationManager) {
@@ -45,7 +46,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         try {
             ApplicationUser applicationUser = new ObjectMapper().readValue(req.getInputStream(), ApplicationUser.class);
             UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(applicationUser.getUsername(),
-                    applicationUser.getPassword(), new ArrayList<>());
+                    applicationUser.getPassword());
             return authenticationManager.authenticate(authRequest);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -55,11 +56,21 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain,
                                             Authentication auth) throws IOException, ServletException {
+        // 从Authentication对象中取出User信息
+        User user = ((User) auth.getPrincipal());
+
+        // 将权限列表转换为一个数组列表，方便转换成JSON
+        // user.getAuthorities()返回的是user对象中的Collection<GrantedAuthority>，authority.getAuthority()则返回权限字符串名称，最后得到一个字符串列表
+        List<String> roles = user.getAuthorities().stream().map(authority -> authority.getAuthority()).collect(Collectors.toList());
 
         Date exp = new Date(System.currentTimeMillis() + EXPIRATION_TIME);
         Key key = Keys.hmacShaKeyFor(KEY.getBytes());
-        Claims claims = Jwts.claims().setSubject(((User) auth.getPrincipal()).getUsername());
-        String token = Jwts.builder().setClaims(claims).signWith(key, SignatureAlgorithm.HS512).setExpiration(exp).compact();
+        String token = Jwts.builder()
+                .setSubject(user.getUsername())
+                .claim("role", roles)
+                .signWith(key, SignatureAlgorithm.HS512)
+                .setExpiration(exp)
+                .compact();
         res.addHeader("token", token);
 
     }
@@ -81,6 +92,5 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         res.put("code", "401");
         res.put("msg", "认证失败");
         out.append(res.toString());
-//        super.unsuccessfulAuthentication(request, response, failed);
     }
 }

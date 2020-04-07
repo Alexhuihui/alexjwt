@@ -1,12 +1,16 @@
 package top.alexmmd.alexjwt.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import top.alexmmd.alexjwt.dao.RoleDao;
 import top.alexmmd.alexjwt.model.ApplicationUser;
-import top.alexmmd.alexjwt.repository.ApplicationUserRepository;
+import top.alexmmd.alexjwt.model.ResultUtils;
+import top.alexmmd.alexjwt.service.ApplicationUserService;
+import top.alexmmd.alexjwt.service.RoleService;
+
+import java.util.Arrays;
 
 /**
  * @author 汪永晖
@@ -15,18 +19,40 @@ import top.alexmmd.alexjwt.repository.ApplicationUserRepository;
 @RequestMapping("/users")
 public class UserController {
 
-    private ApplicationUserRepository applicationUserRepository;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private RoleService roleService;
 
-    public UserController(ApplicationUserRepository applicationUserRepository,
-                          BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.applicationUserRepository = applicationUserRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    @Autowired
+    private ApplicationUserService applicationUserService;
+
+    /**
+     * 注册新用户
+     *
+     * @param user
+     */
+    @PostMapping("/record")
+    public ResultUtils signUp(@RequestBody @Validated ApplicationUser user) {
+        if (usernameExist(user.getUsername())) {
+            return new ResultUtils(500, "该用户名已经被使用");
+        }
+        return applicationUserService.signUp(user);
     }
 
-    @PostMapping("/record")
-    public void signUp(@RequestBody ApplicationUser user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        applicationUserRepository.save(user);
+    @GetMapping("/secure")
+    public ResultUtils reachSecureEndpoint() {
+        return new ResultUtils(100, "If your are reading this you reached a user endpoint");
+    }
+
+    /**
+     * 判断用户名是否被使用
+     *
+     * @param username
+     * @return true -> exist ; false -> notExist
+     */
+    private boolean usernameExist(String username) {
+        if (null == applicationUserService.findByUsername(username)) {
+            return false;
+        }
+        return true;
     }
 }

@@ -5,17 +5,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import top.alexmmd.alexjwt.model.ResultUtils;
 
 /**
  * @author 汪永晖
  */
 @RestController
-@RequestMapping("/api/secure")
-public class SecuredController {
+@RequestMapping("/admin")
+public class AdminController {
 
-    @GetMapping
-    public ResponseEntity reachSecureEndpoint() {
-
-        return new ResponseEntity("If your are reading this you reached a secure endpoint", HttpStatus.OK);
+    @GetMapping("/secure")
+    public ResultUtils reachSecureEndpoint() {
+        return new ResultUtils(100, "If your are reading this you reached a admin endpoint");
     }
 }
