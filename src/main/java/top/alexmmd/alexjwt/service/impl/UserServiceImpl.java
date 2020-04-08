@@ -105,11 +105,12 @@ public class UserServiceImpl implements ApplicationUserService {
     @Transactional
     public ResultUtils signUp(ApplicationUser user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        int userId = userDao.insert(user);
+        userDao.insert(user);
+        ApplicationUser newUser = userDao.findByUsername(user.getUsername());
         Role role = roleDao.queryByRoleName("ROLE_USER");
         UsersRoles usersRoles = UsersRoles.builder()
                 .roleId(role.getId())
-                .userId(Long.valueOf(userId))
+                .userId(Long.valueOf(newUser.getId()))
                 .build();
         usersRolesDao.insert(usersRoles);
         return new ResultUtils(101, "注册成功");

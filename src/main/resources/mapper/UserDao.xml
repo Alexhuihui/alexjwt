@@ -51,7 +51,7 @@
     </select>
 
     <!--新增所有列-->
-    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="top.alexmmd.alexjwt.model.ApplicationUser">
         insert into Test.user(password, username)
         values (#{password}, #{username})
     </insert>
