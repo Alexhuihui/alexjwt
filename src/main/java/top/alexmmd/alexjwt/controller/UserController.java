@@ -1,6 +1,9 @@
 package top.alexmmd.alexjwt.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +43,8 @@ public class UserController {
 
     @GetMapping("/secure")
     public ResultUtils reachSecureEndpoint() {
-        return new ResultUtils(100, "If your are reading this you reached a user endpoint");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return new ResultUtils(100, "If your are reading this you reached a user endpoint", authentication);
     }
 
     /**
