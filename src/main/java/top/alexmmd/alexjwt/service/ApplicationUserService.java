@@ -65,8 +65,8 @@ public interface ApplicationUserService {
     /**
      * 注册时判断用户名是否已使用
      *
-     * @param username
+     * @param staffCode
      * @return
      */
-    ApplicationUser findByUsername(String username);
+    ApplicationUser findByUsername(String staffCode);
 }

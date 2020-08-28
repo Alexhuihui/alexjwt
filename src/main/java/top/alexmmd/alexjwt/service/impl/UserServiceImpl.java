@@ -3,8 +3,8 @@ package top.alexmmd.alexjwt.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
-import top.alexmmd.alexjwt.dao.ApplicationUserDao;
 import org.springframework.stereotype.Service;
+import top.alexmmd.alexjwt.dao.ApplicationUserDao;
 import top.alexmmd.alexjwt.dao.RoleDao;
 import top.alexmmd.alexjwt.dao.UsersRolesDao;
 import top.alexmmd.alexjwt.model.ApplicationUser;
@@ -13,7 +13,6 @@ import top.alexmmd.alexjwt.model.Role;
 import top.alexmmd.alexjwt.model.UsersRoles;
 import top.alexmmd.alexjwt.service.ApplicationUserService;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -119,12 +118,12 @@ public class UserServiceImpl implements ApplicationUserService {
     /**
      * 注册时判断用户名是否已使用
      *
-     * @param username
+     * @param staffCode
      * @return
      */
     @Override
-    public ApplicationUser findByUsername(String username) {
-        ApplicationUser applicationUser = userDao.findByUsername(username);
+    public ApplicationUser findByUsername(String staffCode) {
+        ApplicationUser applicationUser = userDao.findByUsername(staffCode);
         return applicationUser;
     }
 }

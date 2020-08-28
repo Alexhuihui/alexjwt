@@ -4,7 +4,6 @@ package top.alexmmd.alexjwt.service;
  * @author 汪永晖
  */
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -15,12 +14,9 @@ import org.springframework.stereotype.Service;
 import top.alexmmd.alexjwt.dao.ApplicationUserDao;
 import top.alexmmd.alexjwt.dao.RoleDao;
 import top.alexmmd.alexjwt.model.ApplicationUser;
-import top.alexmmd.alexjwt.model.Privilege;
-import top.alexmmd.alexjwt.model.Role;
 import top.alexmmd.alexjwt.model.RoleDetail;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,7 +40,7 @@ public class ApplicationUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException(username);
         }
         Collection<? extends GrantedAuthority> grantedAuthorityList = getAuthorities(roleDao.queryAllByUserId(applicationUser.getId()));
-        return new User(applicationUser.getUsername(), applicationUser.getPassword(), grantedAuthorityList);
+        return new User(applicationUser.getStaffCode(), applicationUser.getPassword(), grantedAuthorityList);
     }
 
     public Collection<? extends GrantedAuthority> getAuthorities(Collection<RoleDetail> roles) {

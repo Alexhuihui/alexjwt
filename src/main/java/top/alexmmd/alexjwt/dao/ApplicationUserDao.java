@@ -2,13 +2,15 @@ package top.alexmmd.alexjwt.dao;
 
 import top.alexmmd.alexjwt.model.ApplicationUser;
 import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 /**
- * (ApplicationUser)表数据库访问层
+ * 投票用户信息
+ * (UserInfo)表数据库访问层
  *
  * @author makejava
- * @since 2020-04-07 16:14:53
+ * @since 2020-08-28 16:40:16
  */
 public interface ApplicationUserDao {
 
@@ -24,7 +26,7 @@ public interface ApplicationUserDao {
      * 查询指定行数据
      *
      * @param offset 查询起始位置
-     * @param limit 查询条数
+     * @param limit  查询条数
      * @return 对象列表
      */
     List<ApplicationUser> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
@@ -33,26 +35,26 @@ public interface ApplicationUserDao {
     /**
      * 通过实体作为筛选条件查询
      *
-     * @param applicationUser 实例对象
+     * @param userInfo 实例对象
      * @return 对象列表
      */
-    List<ApplicationUser> queryAll(ApplicationUser applicationUser);
+    List<ApplicationUser> queryAll(ApplicationUser userInfo);
 
     /**
      * 新增数据
      *
-     * @param applicationUser 实例对象
+     * @param userInfo 实例对象
      * @return 影响行数
      */
-    int insert(ApplicationUser applicationUser);
+    int insert(ApplicationUser userInfo);
 
     /**
      * 修改数据
      *
-     * @param applicationUser 实例对象
+     * @param userInfo 实例对象
      * @return 影响行数
      */
-    int update(ApplicationUser applicationUser);
+    int update(ApplicationUser userInfo);
 
     /**
      * 通过主键删除数据
@@ -62,5 +64,6 @@ public interface ApplicationUserDao {
      */
     int deleteById(Long id);
 
-    ApplicationUser findByUsername(String username);
+    ApplicationUser findByUsername(String staffCode);
+
 }

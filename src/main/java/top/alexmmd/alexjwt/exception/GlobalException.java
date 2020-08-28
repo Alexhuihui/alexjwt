@@ -15,4 +15,9 @@ public class GlobalException {
     public ResultUtils idempotentException(IdempotentException e) {
         return new ResultUtils(500, e.getMessage());
     }
+
+    @ExceptionHandler(InvalidJwtException.class)
+    public ResultUtils invalidJwtException(InvalidJwtException e) {
+        return new ResultUtils(500, e.getMessage());
+    }
 }
