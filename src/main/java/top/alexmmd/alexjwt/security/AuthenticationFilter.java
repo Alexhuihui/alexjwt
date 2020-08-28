@@ -71,7 +71,15 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(exp)
                 .compact();
-        res.addHeader("token", token);
+//        res.addHeader("token", token);
+        res.setCharacterEncoding("UTF-8");
+        res.setContentType("application/json; charset=utf-8");
+        PrintWriter out = res.getWriter();
+        JSONObject response = new JSONObject();
+        response.put("code", "100");
+        response.put("msg", "login success");
+        response.put("data", token);
+        out.append(response.toString());
 
     }
 

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.alexmmd.alexjwt.model.dao.UserInfoDao">
+
+    <resultMap type="top.alexmmd.alexjwt.model.entity.UserInfo" id="UserInfoMap">
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="staffCode" column="staff_code" jdbcType="VARCHAR"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="emailAddress" column="email_address" jdbcType="VARCHAR"/>
+        <result property="voteArea" column="vote_area" jdbcType="INTEGER"/>
+        <result property="cardinalNumber" column="cardinal_number" jdbcType="INTEGER"/>
+        <result property="electNumber" column="elect_number" jdbcType="INTEGER"/>
+        <result property="voteNumber" column="vote_number" jdbcType="INTEGER"/>
+        <result property="isManager" column="is_manager" jdbcType="INTEGER"/>
+        <result property="isVote" column="is_vote" jdbcType="INTEGER"/>
+        <result property="percentage" column="percentage" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="UserInfoMap">
+        select
+          user_id, staff_code, username, password, email_address, vote_area, cardinal_number, elect_number, vote_number, is_manager, is_vote, percentage, status
+        from Test.user_info
+        where user_id = #{userId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="UserInfoMap">
+        select
+          user_id, staff_code, username, password, email_address, vote_area, cardinal_number, elect_number, vote_number, is_manager, is_vote, percentage, status
+        from Test.user_info
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="UserInfoMap">
+        select
+          user_id, staff_code, username, password, email_address, vote_area, cardinal_number, elect_number, vote_number, is_manager, is_vote, percentage, status
+        from Test.user_info
+        <where>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="staffCode != null and staffCode != ''">
+                and staff_code = #{staffCode}
+            </if>
+            <if test="username != null and username != ''">
+                and username = #{username}
+            </if>
+            <if test="password != null and password != ''">
+                and password = #{password}
+            </if>
+            <if test="emailAddress != null and emailAddress != ''">
+                and email_address = #{emailAddress}
+            </if>
+            <if test="voteArea != null">
+                and vote_area = #{voteArea}
+            </if>
+            <if test="cardinalNumber != null">
+                and cardinal_number = #{cardinalNumber}
+            </if>
+            <if test="electNumber != null">
+                and elect_number = #{electNumber}
+            </if>
+            <if test="voteNumber != null">
+                and vote_number = #{voteNumber}
+            </if>
+            <if test="isManager != null">
+                and is_manager = #{isManager}
+            </if>
+            <if test="isVote != null">
+                and is_vote = #{isVote}
+            </if>
+            <if test="percentage != null and percentage != ''">
+                and percentage = #{percentage}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="userId" useGeneratedKeys="true">
+        insert into Test.user_info(staff_code, username, password, email_address, vote_area, cardinal_number, elect_number, vote_number, is_manager, is_vote, percentage, status)
+        values (#{staffCode}, #{username}, #{password}, #{emailAddress}, #{voteArea}, #{cardinalNumber}, #{electNumber}, #{voteNumber}, #{isManager}, #{isVote}, #{percentage}, #{status})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update Test.user_info
+        <set>
+            <if test="staffCode != null and staffCode != ''">
+                staff_code = #{staffCode},
+            </if>
+            <if test="username != null and username != ''">
+                username = #{username},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="emailAddress != null and emailAddress != ''">
+                email_address = #{emailAddress},
+            </if>
+            <if test="voteArea != null">
+                vote_area = #{voteArea},
+            </if>
+            <if test="cardinalNumber != null">
+                cardinal_number = #{cardinalNumber},
+            </if>
+            <if test="electNumber != null">
+                elect_number = #{electNumber},
+            </if>
+            <if test="voteNumber != null">
+                vote_number = #{voteNumber},
+            </if>
+            <if test="isManager != null">
+                is_manager = #{isManager},
+            </if>
+            <if test="isVote != null">
+                is_vote = #{isVote},
+            </if>
+            <if test="percentage != null and percentage != ''">
+                percentage = #{percentage},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+        </set>
+        where user_id = #{userId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from Test.user_info where user_id = #{userId}
+    </delete>
+
+</mapper>

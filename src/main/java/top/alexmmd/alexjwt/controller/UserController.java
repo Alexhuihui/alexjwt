@@ -7,6 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import top.alexmmd.alexjwt.annotation.AutoIdempotent;
 import top.alexmmd.alexjwt.dao.RoleDao;
 import top.alexmmd.alexjwt.model.ApplicationUser;
 import top.alexmmd.alexjwt.model.ResultUtils;
@@ -42,6 +43,7 @@ public class UserController {
     }
 
     @GetMapping("/secure")
+    @AutoIdempotent
     public ResultUtils reachSecureEndpoint() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return new ResultUtils(100, "If your are reading this you reached a user endpoint", authentication);
