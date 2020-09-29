@@ -12,7 +12,7 @@
     <select id="queryById" resultMap="RolesPrivilegesMap">
         select
           roles_privileges_id, role_id, privilege_id
-        from Test.roles_privileges
+        from vote_system.roles_privileges
         where roles_privileges_id = #{rolesPrivilegesId}
     </select>
 
@@ -20,7 +20,7 @@
     <select id="queryAllByLimit" resultMap="RolesPrivilegesMap">
         select
           roles_privileges_id, role_id, privilege_id
-        from Test.roles_privileges
+        from vote_system.roles_privileges
         limit #{offset}, #{limit}
     </select>
 
@@ -28,7 +28,7 @@
     <select id="queryAll" resultMap="RolesPrivilegesMap">
         select
           roles_privileges_id, role_id, privilege_id
-        from Test.roles_privileges
+        from vote_system.roles_privileges
         <where>
             <if test="rolesPrivilegesId != null">
                 and roles_privileges_id = #{rolesPrivilegesId}
@@ -44,13 +44,13 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="rolesPrivilegesId" useGeneratedKeys="true">
-        insert into Test.roles_privileges(role_id, privilege_id)
+        insert into vote_system.roles_privileges(role_id, privilege_id)
         values (#{roleId}, #{privilegeId})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update Test.roles_privileges
+        update vote_system.roles_privileges
         <set>
             <if test="roleId != null">
                 role_id = #{roleId},
@@ -64,7 +64,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from Test.roles_privileges where roles_privileges_id = #{rolesPrivilegesId}
+        delete from vote_system.roles_privileges where roles_privileges_id = #{rolesPrivilegesId}
     </delete>
 
 </mapper>

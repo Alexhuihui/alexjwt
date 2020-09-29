@@ -11,7 +11,7 @@
     <select id="queryById" resultMap="PrivilegeMap">
         select
           id, name
-        from Test.privilege
+        from vote_system.privilege
         where id = #{id}
     </select>
 
@@ -19,7 +19,7 @@
     <select id="queryAllByLimit" resultMap="PrivilegeMap">
         select
           id, name
-        from Test.privilege
+        from vote_system.privilege
         limit #{offset}, #{limit}
     </select>
 
@@ -27,7 +27,7 @@
     <select id="queryAll" resultMap="PrivilegeMap">
         select
           id, name
-        from Test.privilege
+        from vote_system.privilege
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -40,13 +40,13 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into Test.privilege(name)
+        insert into vote_system.privilege(name)
         values (#{name})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update Test.privilege
+        update vote_system.privilege
         <set>
             <if test="name != null and name != ''">
                 name = #{name},
@@ -57,7 +57,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from Test.privilege where id = #{id}
+        delete from vote_system.privilege where id = #{id}
     </delete>
 
 </mapper>

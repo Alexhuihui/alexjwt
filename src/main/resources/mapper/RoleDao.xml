@@ -11,7 +11,7 @@
     <select id="queryById" resultMap="RoleMap">
         select
           id, name
-        from Test.role
+        from vote_system.role
         where id = #{id}
     </select>
 
@@ -19,7 +19,7 @@
     <select id="queryAllByLimit" resultMap="RoleMap">
         select
           id, name
-        from Test.role
+        from vote_system.role
         limit #{offset}, #{limit}
     </select>
 
@@ -27,7 +27,7 @@
     <select id="queryAll" resultMap="RoleMap">
         select
           id, name
-        from Test.role
+        from vote_system.role
         <where>
             <if test="id != null">
                 and id = #{id}
@@ -41,7 +41,7 @@
     <select id="queryByRoleName" resultType="top.alexmmd.alexjwt.model.Role">
         select
           id, name
-        from Test.role
+        from vote_system.role
         where name = #{name}
     </select>
 
@@ -53,23 +53,23 @@
             c.`name` AS privilegeName,
             d.`user_id` AS userId
         FROM
-            Test.`roles_privileges` AS a
-            LEFT JOIN Test.`role` AS b ON b.`id` = a.`role_id`
-            LEFT JOIN Test.`privilege` AS c ON c.`id` = a.`privilege_id`
-            LEFT JOIN Test.`users_roles` AS d ON d.`role_id` = a.`role_id`
+            vote_system.`roles_privileges` AS a
+            LEFT JOIN vote_system.`role` AS b ON b.`id` = a.`role_id`
+            LEFT JOIN vote_system.`privilege` AS c ON c.`id` = a.`privilege_id`
+            LEFT JOIN vote_system.`users_roles` AS d ON d.`role_id` = a.`role_id`
         WHERE
             d.`user_id` = #{id}
     </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into Test.role(name)
+        insert into vote_system.role(name)
         values (#{name})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update Test.role
+        update vote_system.role
         <set>
             <if test="name != null and name != ''">
                 name = #{name},
@@ -80,7 +80,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from Test.role where id = #{id}
+        delete from vote_system.role where id = #{id}
     </delete>
 
 </mapper>

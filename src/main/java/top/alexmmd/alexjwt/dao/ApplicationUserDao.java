@@ -66,4 +66,10 @@ public interface ApplicationUserDao {
 
     ApplicationUser findByUsername(String staffCode);
 
+    /**
+     * 清除缓存
+     *
+     * @return
+     */
+    int updateCache();
 }

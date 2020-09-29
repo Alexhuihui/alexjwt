@@ -105,7 +105,7 @@ public class UserServiceImpl implements ApplicationUserService {
     public ResultUtils signUp(ApplicationUser user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userDao.insert(user);
-        ApplicationUser newUser = userDao.findByUsername(user.getUsername());
+        ApplicationUser newUser = userDao.findByUsername(user.getStaffCode());
         Role role = roleDao.queryByRoleName("ROLE_USER");
         UsersRoles usersRoles = UsersRoles.builder()
                 .roleId(role.getId())

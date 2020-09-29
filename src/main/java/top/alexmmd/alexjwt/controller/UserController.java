@@ -6,10 +6,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import top.alexmmd.alexjwt.annotation.AutoIdempotent;
+import top.alexmmd.alexjwt.dao.ApplicationUserDao;
+import top.alexmmd.alexjwt.dao.RoleDao;
 import top.alexmmd.alexjwt.model.ApplicationUser;
 import top.alexmmd.alexjwt.model.ResultUtils;
+import top.alexmmd.alexjwt.model.RoleDetail;
 import top.alexmmd.alexjwt.service.ApplicationUserService;
 import top.alexmmd.alexjwt.service.RoleService;
+
+import java.util.List;
 
 /**
  * @author 汪永晖
@@ -23,6 +28,12 @@ public class UserController {
 
     @Autowired
     private ApplicationUserService applicationUserService;
+
+    @Autowired
+    private ApplicationUserDao applicationUserDao;
+
+    @Autowired
+    private RoleDao roleDao;
 
     /**
      * 注册新用户
@@ -42,6 +53,16 @@ public class UserController {
     public ResultUtils reachSecureEndpoint() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return new ResultUtils(100, "If your are reading this you reached a user endpoint", authentication);
+    }
+
+    @GetMapping("/getMyInfo")
+    public ResultUtils getMyInfo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String staffCode = authentication.getName();
+        ApplicationUser applicationUser = applicationUserDao.findByUsername(staffCode);
+        List<RoleDetail> roleDetailList = roleDao.queryAllByUserId(applicationUser.getId());
+        applicationUser.setRoleDetailList(roleDetailList);
+        return new ResultUtils(100, "成功查询用户信息", applicationUser);
     }
 
     /**

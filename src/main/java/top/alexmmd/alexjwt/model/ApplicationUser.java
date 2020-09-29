@@ -1,5 +1,6 @@
 package top.alexmmd.alexjwt.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -36,7 +37,7 @@ public class ApplicationUser implements Serializable {
     /**
     * 用户密码
     */
-    @NotBlank(message = "密码不能为空")
+//    @JsonIgnore
     private String password;
     /**
     * 用戶邮箱地址
@@ -74,6 +75,8 @@ public class ApplicationUser implements Serializable {
     * 用戶狀態值：0無效/1有效，默认1
     */
     private Integer status;
+
+    private Integer isPitch;
 
     private List<RoleDetail> roleDetailList;
 
